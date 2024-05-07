@@ -1,26 +1,29 @@
-import { SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import vector from "../assets/Vector.png";
 import close from "../assets/close.png";
 
-const Getproject = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+const Getproject: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   // Function to handle input changes
-  const handleNameChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  const handleEmailChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setEmail(event.target.value);
-    setEmailError("");
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+
+    // Validate email format
+    if (!validateEmail(newEmail)) {
+      setEmailError("Enter a valid email address");
+    } else {
+      setEmailError(""); // Clear error if email is valid
+    }
   };
 
   // Function to validate email format
@@ -31,7 +34,7 @@ const Getproject = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
 
@@ -70,7 +73,10 @@ const Getproject = () => {
             Start your success Journey here!
           </p>
         </div>
-        <div className="flex flex-col mx-auto mt-[62px] gap-6">
+        <form
+          className="flex flex-col mx-auto mt-[62px] gap-6"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             value={name}
@@ -86,19 +92,19 @@ const Getproject = () => {
             placeholder="Enter your email"
           />
           {submitted && emailError && (
-            <p className="text-red-500">{emailError}</p>
+            <p className="text-red-500 font-bold">{emailError}</p>
           )}
           <button
-            className={`w-[417px] h-[75px] py-6 mt-[40px] text-white text-lg rounded-full bg-gray-300 ${
+            type="submit"
+            className={`w-[417px] h-[75px] py-6 mt-[40px] text-white text-lg rounded-full bg-black ${
               (!name.trim() || !validateEmail(email)) &&
-              "opacity-50 cursor-not-allowed"
+              "bg-gray-300 cursor-not-allowed"
             }`}
             disabled={!name.trim() || !validateEmail(email)}
-            onClick={handleSubmit}
           >
             Submit
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
