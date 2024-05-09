@@ -94,16 +94,18 @@ const Getproject: React.FC = () => {
           {submitted && emailError && (
             <p className="text-red-500 font-bold">{emailError}</p>
           )}
-          <button
-            type="submit"
-            className={`w-[417px] h-[75px] py-6 mt-[40px] text-white text-lg rounded-full bg-black ${
-              (!name.trim() || !validateEmail(email)) &&
-              "bg-gray-300 cursor-not-allowed"
-            }`}
-            disabled={!name.trim() || !validateEmail(email)}
-          >
-            Submit
-          </button>
+          <Link to="/congratulation">
+            <button
+              type="submit"
+              className={`w-[417px] h-[75px] py-6 mt-[40px] text-white text-lg rounded-full bg-black ${
+                (!name.trim() || !validateEmail(email)) &&
+                "bg-gray-300 cursor-not-allowed"
+              }`}
+              disabled={!name.trim() || !validateEmail(email)}
+            >
+              Submit
+            </button>
+          </Link>
         </form>
       </div>
     </div>
